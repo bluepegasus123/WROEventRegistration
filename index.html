@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://fastcdn.org/Papa-Parse/4.1.2/papaparse.min.js"></script>
+  <script data-require="angular.js@*" data-semver="4.0.0" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.10/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js"></script>
+  <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+  <script src="script.js"></script>
+
+  <!--TITLE-->
+  <title>Sponsor Database</title>
+
+</head> 
+ 
+<body ng-app="sponsorApp"  ng-controller="MainController">
+
+  <!--Jumbotron-->
+  <div class="jumbotron text-center">
+    <h1>WeReachOut Sponsor Directory</h1>
+    <p>Sponsor Details for all the events from 2016 onwards</p>
+  </div>
+
+  <!--Blank Space-->
+  <div class="col-sm-3" style="background-color:white;"></div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4" style="background-color:white;"></div>
+
+      <div class="col-sm-4" style="background-color:white;">
+        <form style >
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" class="form-control" id="fname" ng-model="selectedSponsor.FirstName" name="firstname" placeholder="Your name..">
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" class="form-control" id="lname" ng-model="selectedSponsor.LastName" name="lastname" placeholder="Your last name..">
+          </div>
+          <div class="form-group">
+            <label for="Email Address">Email Address</label>
+            <input type="text" class="form-control" id="pnumber" ng-model="selectedSponsor.Email" name="phonumber" placeholder="Your email address..">
+          </div>
+
+          <div class="form-group">
+            <label for="Payment Amount">Payment Amount</label>
+            <input type="text" class="form-control" id="amount" ng-model="selectedSponsor.Amount" name="pamount" placeholder="Your payment amount..">
+          </div>
+
+          <div class="form-group">
+            <label for="Payment Type">Payment Type</label>
+            <input type="text" class="form-control" id="type" ng-model="selectedSponsor.Type" name="ptype" placeholder="Your payment type..">
+          </div>
+
+
+
+          <div class="form-group">
+
+          <button type="button" ng-click="editUser(selectedSponsor)" class="btn btn-primary btn-sm" style="background-color: blue">Change</button>
+          <button type="button" ng-click="cancelUser()"  class="btn btn-secondary btn-sm" style="background-color: blue">Cancel</button>
+          
+          
+
+          <button type="button" ng-click="saveXSL()" class="btn btn-primary btn-sm" style="background-color: grey">SaveXSL</button>
+         </div>
+          <!--  <div class="form-group"> 
+           <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+          <div class="form-group"> 
+           <button type="submit" class="btn btn-primary">Create</button>
+          </div> -->
+        </form>
+      </div>
+      <div class="col-sm-4" style="background-color:white;">
+        <button type="button" ng-click="createUser()" class="btn btn-primary btn-sm" style="background-color: green"><i class="far fa-plus-square"></i>Create</button>
+      </div>
+    </div>
+
+  </div>
+  <!--div third-->
+  <div>
+
+    <div style="margin-top:50px" class="container-fluid" id="filecontents">
+      <div class="row">
+        <div class="col-sm-2" style="background-color:white;"></div>
+        <div class="col-sm-8" style="background-color:white;">
+          <table class="table  table-striped table-hover table-bordered table-sm" id="content">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email Address</th>
+                <th>Payment Amount</th>
+                <th>Payment Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="element in datam  ">
+                <td>{{element.Id }}</td>
+                <td>{{element.FirstName}}</td>
+                <td>{{element.LastName}}</td>
+                <td>{{element.Email}}</td>
+                <td>{{element.Amount}}</td>
+                <td>{{element.Type}}</td>
+                <td>
+                  <button ng-click="selectUser(element.Id)" class="btn btn-info" type="button"><i class="far fa-edit"></i></button>
+                  <button ng-click="deleteUser(element.Id)" class="btn btn-info" type="button"><i class="far fa-trash-alt"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-2" style="background-color:white;"></div>
+      </div>
+    </div>
+
+    <!--<div>{{error}}</div>-->
+
+
+
+    <!--<form name = "searchuser" ng-submit="search()">-->
+    <!--  <input type="search" required placeholder = "useranme to find " ng-model="username"/>-->
+    <!--  <input type="submit" value ="search"/> -->
+    <!--</form>-->
+
+    <!--<div ng-show="user"> Handle : {{user.login}}</div>-->
+    <!--<div ng-show="user"> Name : {{user.name}}</div>-->
+    <!--<div>-->
+    <!--    <img ng-src="{{user.avatar_url}}">-->
+    <!--</div>-->
+
+    <div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
